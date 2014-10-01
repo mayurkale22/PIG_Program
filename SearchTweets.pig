@@ -7,11 +7,8 @@
 -- Input: Load raw data.
 RawData = LOAD '/user/cloudera/pig/tweets.txt';
 
--- Call the Lower function to change the raw data field to lowercase.
-RawDataLowerCase = FOREACH RawData GENERATE LOWER(((chararray)$0)) as tweets;
-
 -- Use the FOREACH-GENERATE command to tokenize tweets word.
-TokenizedData = FOREACH RawDataLowerCase GENERATE flatten(TOKENIZE(tweets)) as word;
+TokenizedData = FOREACH RawDataLowerCase GENERATE LOWER(flatten(TOKENIZE(tweets))) as word;
 
 -- Use the Replace function to replace existing characters in a string with new characters.
 ReplaceData = FOREACH TokenizedData GENERATE REPLACE(word, '.*dec.*', 'dec') as word;
